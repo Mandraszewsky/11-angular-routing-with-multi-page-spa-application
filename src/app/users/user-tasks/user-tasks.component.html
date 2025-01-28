@@ -2,9 +2,11 @@
   <header>
     <h2>{{ userName() }} Tasks</h2>
     <menu>
-      <a>Add Task</a>
+      <!-- relative children link, it will be added to /users/userId -->
+      <a [routerLink]="['tasks/new']" routerLinkActive="router-link-active" >Add Task</a>
     </menu>
   </header>
 
-  <p>Todo ...</p>
+  <!-- router-outlet is a placeholder - some kind of markup, where component should be loaded via routing, this case is for childs -->
+  <router-outlet />
 </section>
