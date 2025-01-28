@@ -1,5 +1,9 @@
 <div>
-  <a>
+  <!-- first way: -->
+  <!-- <a [routerLink]="['/users/' + user().id]" routerLinkActive="selected" > -->
+
+  <!-- second way: -->
+  <a [routerLink]="['/users', user().id]" routerLinkActive="selected">
     <img [src]="imagePath()" [alt]="user().name" />
     <span>{{ user().name }}</span>
   </a>
