@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, input, inject, computed } from '@angular/core';
 
 import { TaskComponent } from './task/task.component';
-import { Task } from './task/task.model';
+import { TasksService } from './tasks.service';
 
 @Component({
   selector: 'app-tasks',
@@ -11,5 +11,13 @@ import { Task } from './task/task.model';
   imports: [TaskComponent],
 })
 export class TasksComponent {
-  userTasks: Task[] = [];
+  private tasksService = inject(TasksService);
+
+  // extract dynamic route parameter (path: 'users/:userId') via input binding, accessable via paramsInheritanceStrategy config
+  userId = input.required<string>();
+
+  userTasks = computed(() => 
+    this.tasksService.allTasks().filter((task) => task.userId === this.userId())
+  );
+
 }

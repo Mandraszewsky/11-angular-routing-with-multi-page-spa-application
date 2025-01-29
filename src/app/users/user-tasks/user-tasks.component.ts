@@ -10,7 +10,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './user-tasks.component.css',
 })
 export class UserTasksComponent {
-  // extract dynamic route parameter (path: 'users/:userId') via input binding:
+  // extract dynamic route parameter (path: 'users/:userId') via input binding, accessable only for parent route component:
   userId = input.required<string>();
 
   private userService = inject(UsersService);
