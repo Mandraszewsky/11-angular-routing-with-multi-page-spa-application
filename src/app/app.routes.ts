@@ -1,10 +1,11 @@
 import { CanMatchFn, RedirectCommand, Router, Routes } from "@angular/router";
-import { TasksComponent } from "./tasks/tasks.component";
+
 import { NoTaskComponent } from "./tasks/no-task/no-task.component";
 import { resolveComponentTitle, resolveUserName, UserTasksComponent } from "./users/user-tasks/user-tasks.component";
 import { canLeaveEditPage, NewTaskComponent } from "./tasks/new-task/new-task.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { inject } from "@angular/core";
+import { TasksComponent } from "./tasks/tasks.component";
 
 // guard function, returning boolean:
 const dummyCanMatch: CanMatchFn = (route, segments) => {
@@ -41,7 +42,9 @@ export const routes: Routes = [
             },
             {
                 path: 'tasks', //users/userId/tasks
-                component: TasksComponent,
+                component: TasksComponent, 
+                // loadComponent = lazy loading (triggered when this route is activated)
+                //loadComponent: () => import('./tasks/task/task.component').then(module => module.TaskComponent),
             },
             {
                 path: 'tasks/new',
