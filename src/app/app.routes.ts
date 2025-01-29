@@ -1,9 +1,22 @@
-import { Routes } from "@angular/router";
+import { CanMatchFn, RedirectCommand, Router, Routes } from "@angular/router";
 import { TasksComponent } from "./tasks/tasks.component";
 import { NoTaskComponent } from "./tasks/no-task/no-task.component";
 import { resolveComponentTitle, resolveUserName, UserTasksComponent } from "./users/user-tasks/user-tasks.component";
-import { NewTaskComponent } from "./tasks/new-task/new-task.component";
+import { canLeaveEditPage, NewTaskComponent } from "./tasks/new-task/new-task.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
+import { inject } from "@angular/core";
+
+// guard function, returning boolean:
+const dummyCanMatch: CanMatchFn = (route, segments) => {
+    const router = inject(Router);
+    const shouldGetAccess = Math.random();
+
+    if (shouldGetAccess < 0.5)
+        return true;
+
+    // instead of returning false, redirect:
+    return new RedirectCommand(router.parseUrl('/unauthorized'));
+}
 
 export const routes: Routes = [
     {
@@ -33,8 +46,12 @@ export const routes: Routes = [
             {
                 path: 'tasks/new',
                 component: NewTaskComponent,
+                // access control to unattended leave page via guards:
+                canDeactivate: [canLeaveEditPage]
             }
         ],
+        // access control to parent and child routes via guards:
+        //canMatch: [dummyCanMatch],
         // static data:
         data: {
             staticUserName: 'staticUserName'
