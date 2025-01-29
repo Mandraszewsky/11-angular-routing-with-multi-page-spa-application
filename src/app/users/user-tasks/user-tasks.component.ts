@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { UsersService } from '../users.service';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRouteSnapshot, ResolveFn, RouterLink, RouterOutlet, RouterStateSnapshot } from '@angular/router';
 
 @Component({
   selector: 'app-user-tasks',
@@ -12,6 +12,12 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 export class UserTasksComponent {
   // extract dynamic route parameter (path: 'users/:userId') via input binding, accessable only for parent route component:
   userId = input.required<string>();
+
+  // static data from routes:
+  staticUserName = input.required<string>();
+
+  // dynamic data from routes:
+  dynamicUserName = input.required<string>();
 
   private userService = inject(UsersService);
 
@@ -29,3 +35,12 @@ export class UserTasksComponent {
   //   });
   // }
 }
+
+// dynamic data from routes via function (modern way):
+// it will invoked and re-executed every time when this route parameter changes for UserTasksComponent (thats why we dont need subscription here)
+export const resolveUserName: ResolveFn<string> = (activatedRoute: ActivatedRouteSnapshot, routeState: RouterStateSnapshot) => {
+  const usersService = inject(UsersService);
+  const userName = usersService.users.find(user => user.id === activatedRoute.paramMap.get('userId'))?.name || '';
+
+  return userName;
+};
